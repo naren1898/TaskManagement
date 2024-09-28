@@ -1,20 +1,48 @@
 {
 	"info": {
-		"_postman_id": "3fd5590b-fc0c-429a-b0c5-b37346bc2b8f",
+		"_postman_id": "faecfb7b-d3cb-4039-8191-b0952017b03a",
 		"name": "Task Management",
-		"description": "The Task Management Collection conatains the below API Request.\n\nRegister -> api/register",
+		"description": "The Task Management Collection conatains the below API Request.\n\n<img src=\"https://content.pstmn.io/79347d4f-ece1-4c7a-a160-a2b356c333b2/aW1hZ2UucG5n\" alt=\"\" height=\"751\" width=\"893\">",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38658108"
+		"_exporter_id": "33204789"
 	},
 	"item": [
 		{
 			"name": "User Registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"  // pm.response.to.have.status(200) checks if the HTTP status code is 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test to verify that the username in the request body matches the one in the response body\r",
+							"let requestBody = pm.request.body ? JSON.parse(pm.request.body.raw) : {};\r",
+							"let responseBody = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Username in request and response should be the same\", function () {\r",
+							"    // Check if 'username' exists in both request and response\r",
+							"    pm.expect(requestBody).to.have.property('username');\r",
+							"    pm.expect(responseBody).to.have.property('username');\r",
+							"    pm.expect(requestBody.username).to.eql(responseBody.username);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"username\": \"user5\",\r\n\"password\": \"password123\"\r\n}",
+					"raw": "{\r\n\"username\": \"Walter\",\r\n\"password\": \"password@123\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -22,28 +50,28 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9090/api/register",
+					"raw": "http://localhost:6060/api/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9090",
+					"port": "6060",
 					"path": [
 						"api",
 						"register"
 					]
 				},
-				"description": "StartFragment## User Registration  \nThis endpoint allows you to create a new task\n\n**Method**: \\`POST\\`  \n**Endpoint**: \\`/tasks\\`\n\n\\### Body Parameters  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`title\\` | String | The title of the task (Required). |  \n| \\`description\\`| String | A detailed description of the task. |  \n| \\`due_date\\` | Date | The due date of the task. |  \n| \\`project_id\\` | String | The ID of the project the task belongs to.|\n\n\\### Example Body:  \n\\`\\`\\`json  \n{  \n\"title\": \"Complete API Documentation\",  \n\"description\": \"Write detailed documentation for API endpoints\",  \n\"due_date\": \"2024-10-05\",  \n\"project_id\": \"12345\"  \n}EndFragment"
+				"description": "**\\## User Registration**  \nThis endpoint allows you to register as a new user in Task Management Application.\n\n**Method**: \\`POST\\`  \n**Endpoint**: \\`[/api/register](http://localhost:9090/api/register)'\n\n**\\### Request Body Parameters**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`username\\` | String | User Name for login (Required and must be unique). |  \n| \\`password\\`| String | Create a Password (Required) |"
 			},
 			"response": [
 				{
-					"name": "Response",
+					"name": "User Registration",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"username\": \"user5\",\r\n\"password\": \"password123\"\r\n}",
+							"raw": "{\r\n\"username\": \"John\",\r\n\"password\": \"password@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -101,7 +129,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 28 Sep 2024 06:56:49 GMT"
+							"value": "Sat, 28 Sep 2024 11:21:12 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -113,16 +141,68 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"username\": \"user5\",\n    \"role\": null\n}"
-				},
+					"body": "{\n    \"username\": \"John\",\n    \"role\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
 				{
-					"name": "New Request",
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var cookieValue = pm.response.headers.get('Set-Cookie');\r",
+							"pm.environment.set('cookieValue', cookieValue);\r",
+							"console.log(cookieValue);\r",
+							"\r",
+							"// Test to check if 'Set-Cookie' header is present in the response\r",
+							"pm.test(\"Set-Cookie header is generated\", function () {\r",
+							"    let setCookieHeader = pm.response.headers.get(\"Set-Cookie\");\r",
+							"    pm.expect(setCookieHeader).to.not.be.undefined;\r",
+							"    console.log(\"Set-Cookie:\", setCookieHeader);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"username\": \"Walter\",\r\n\"password\": \"password@123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6060/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "**\\## Login**  \nThis endpoint allows you to login to the task management application. **In response header it returns a JWT token in Set-Cookie which can be users for further request authentication.**\n\n**Method**: \\`POST\\`  \n**Endpoint**: \\`[/api/login](http://localhost:6060/api/login)'\n\n**\\### Body Parameters**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`username\\` | String | The name of the user (Required). |  \n| \\`password\\`| String | The password for authentication (Required) |"
+			},
+			"response": [
+				{
+					"name": "Login",
 					"originalRequest": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"username\": \"user6\",\r\n\"password\": \"password123\"\r\n}",
+							"raw": "{\r\n\"username\": \"Walter\",\r\n\"password\": \"password@123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -130,15 +210,141 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:9090/api/register",
+							"raw": "http://localhost:6060/api/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "9090",
+							"port": "6060",
 							"path": [
 								"api",
-								"register"
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Set-Cookie",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MjM2NTY5NDIsImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjo0fQ.3MkDJiHjwB07aZUqA1iA2ssMcE0v6kM6gngpRWEOo78"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:40:56 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"Walter\",\n    \"role\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Add New Task",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{cookieValue}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"work5\",\r\n    \"description\": \"work related to gokapture\",\r\n    \"status\": 1,\r\n    \"priority\": 1,\r\n    \"due_date\":\"2024-10-14\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:6060/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"api",
+						"tasks"
+					]
+				},
+				"description": "**\\## Add New Task**\n\nThis endpoint allows you to add a task by the user who has logged in. **This request takes the authentication from the Header parameter Set-Cookie generated by login request**\n\n**Method**: \\`POST\\`  \n**Endpoint**: \\`[/api/tasks](http://localhost:6060/api/tasks)'\n\n**\\### Request Body Parameters**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`title\\` | String | Title of the task |  \n| \\`description\\`| String | More details about the task |\n\n| \\`status\\` | Integer| 0 - IN_PROGRESS, 1 - Completed |  \n| \\`priority\\`| Integer| Lower number takes higher priority |\n\n| \\`due_date\\` | String | Date on which the task needs to be completed format 'YYY-MM-DD' |"
+			},
+			"response": [
+				{
+					"name": "Task 1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Develop a method to calculate UTC time\",\r\n    \"description\": \"Develop a method to calculate UTC time \",\r\n    \"status\": 1,\r\n    \"priority\": 1,\r\n    \"due_date\":\"2024-10-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks"
 							]
 						}
 					},
@@ -180,7 +386,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 28 Sep 2024 07:42:02 GMT"
+							"value": "Sat, 28 Sep 2024 11:46:31 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -192,86 +398,94 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"username\": \"user6\",\n    \"role\": null\n}"
+					"body": "{\n    \"id\": 4,\n    \"title\": \"Develop a method to calculate UTC time\",\n    \"description\": \"Develop a method to calculate UTC time \",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": 1,\n    \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n    \"created_At\": \"2024-09-28T11:46:31.582+00:00\",\n    \"updated_At\": \"2024-09-28T11:46:31.582+00:00\"\n}"
+				},
+				{
+					"name": "Task 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Do Yoga at 6am\",\r\n    \"description\": \"Do Yoga daily morning \",\r\n    \"status\": 1,\r\n    \"priority\": 1,\r\n    \"due_date\":\"2024-10-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:47:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 5,\n    \"title\": \"Do Yoga at 6am\",\n    \"description\": \"Do Yoga daily morning \",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": 1,\n    \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n    \"created_At\": \"2024-09-28T11:47:15.291+00:00\",\n    \"updated_At\": \"2024-09-28T11:47:15.291+00:00\"\n}"
 				}
 			]
-		},
-		{
-			"name": "Login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var cookieValue = pm.cookies.get('cookie_name');\r",
-							"pm.environment.set('cookieValue', cookieValue);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\"username\": \"user5\",\r\n\"password\": \"password123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:6060/api/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "6060",
-					"path": [
-						"api",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create New Task",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "token",
-						"value": "{{cookieValue}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"work5\",\r\n    \"description\": \"work related to gokapture\",\r\n    \"status\": 1,\r\n    \"priority\": 1,\r\n    \"due_date\":\"2024-10-14\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:6060/api/tasks",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "6060",
-					"path": [
-						"api",
-						"tasks"
-					]
-				}
-			},
-			"response": []
 		},
 		{
 			"name": "Get Task",
@@ -295,9 +509,87 @@
 						"api",
 						"tasks"
 					]
-				}
+				},
+				"description": "**\\## Get Task**\n\nThis endpoint allows you to get the task by the user who has logged in. This request takes the authentication from the Header parameter Set-Cookie generated by login request\n\n**Method**: \\`GET\\`  \n**Endpoint**: \\`[/api/tasks](http://localhost:6060/api/tasks)'\n\n**\\### Request Body**\n\nNo Request Body to be provided as it fetches all the task created by the specific user\n\n**\\### Response Body in List of multiple Tasks**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|\n\n| \\`id\\` | Integer| Unique Id Generated for task. |  \n| \\`title\\` | String | Title of the task |  \n| \\`description\\`| String | Given Description |\n\n| \\`status\\` | Integer| 0 - IN_PROGRESS, 1 - Completed |  \n| \\`priority\\`| Integer| Lower number takes higher priority |\n\n| \\`due_date\\` | String | Date on which the task needs to be completed format 'YYY-MM-DD' |"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Get Task",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:6060/api/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:47:39 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"tasks\": [\n        {\n            \"id\": 3,\n            \"title\": \"Write Journal at 5pm\",\n            \"description\": \"Remember to Write Joural At 5pm\",\n            \"status\": \"IN_PROGRESS\",\n            \"priority\": 1,\n            \"due_date\": \"2024-10-14T00:00:00.000+00:00\",\n            \"created_At\": \"2024-09-28T11:44:54.731+00:00\",\n            \"updated_At\": \"2024-09-28T11:44:54.731+00:00\"\n        },\n        {\n            \"id\": 4,\n            \"title\": \"Develop a method to calculate UTC time\",\n            \"description\": \"Develop a method to calculate UTC time \",\n            \"status\": \"IN_PROGRESS\",\n            \"priority\": 1,\n            \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n            \"created_At\": \"2024-09-28T11:46:31.582+00:00\",\n            \"updated_At\": \"2024-09-28T11:46:31.582+00:00\"\n        },\n        {\n            \"id\": 5,\n            \"title\": \"Do Yoga at 6am\",\n            \"description\": \"Do Yoga daily morning \",\n            \"status\": \"IN_PROGRESS\",\n            \"priority\": 1,\n            \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n            \"created_At\": \"2024-09-28T11:47:15.291+00:00\",\n            \"updated_At\": \"2024-09-28T11:47:15.291+00:00\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Update Existing Task",
@@ -306,7 +598,7 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MDM4NTkzMjksImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjoxfQ.ifmDo6ZxINIhNgFN3tazJI1wOVtIBsvk4eh10Sz1iVY",
+						"value": "{{cookieValue}}",
 						"type": "text"
 					}
 				],
@@ -331,9 +623,97 @@
 						"tasks",
 						"1"
 					]
-				}
+				},
+				"description": "\\## Update Existing Task\n\nThis endpoint allows you to update the details in the existing task. **This request takes the id of the task which need to be updated in the request path.** This request takes the authentication from the Header parameter Set-Cookie generated by login request\n\n**Method**: \\`PUT\\`  \n**Endpoint**: \\`[/api/tasks/1](http://localhost:6060/api/tasks/1)'\n\n**\\### Body Parameters**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`title\\` | String | Title of the task |  \n| \\`description\\`| String | More details about the task |\n\n| \\`status\\` | Integer| 0 - IN_PROGRESS, 1 - Completed |  \n| \\`priority\\`| Integer| Lower number takes higher priority |"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Update Existing Task",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Write Journal at 5pm\",\r\n    \"description\": \"Remember to Write Joural At 5pm\",\r\n    \"status\": \"DONE\",\r\n    \"priority\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/tasks/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:49:03 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"title\": \"Write Journal at 5pm\",\n    \"description\": \"Remember to Write Joural At 5pm\",\n    \"status\": \"DONE\",\n    \"priority\": 1,\n    \"due_date\": \"2024-10-14T00:00:00.000+00:00\",\n    \"created_At\": \"2024-09-28T11:44:54.731+00:00\",\n    \"updated_At\": \"2024-09-28T11:44:54.731+00:00\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Search Task with Keywords and Page Wise",
@@ -345,7 +725,7 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MDM4NTkzMjksImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjoxfQ.ifmDo6ZxINIhNgFN3tazJI1wOVtIBsvk4eh10Sz1iVY",
+						"value": "{{cookieValue}}",
 						"type": "text"
 					}
 				],
@@ -381,16 +761,112 @@
 						{
 							"key": "size",
 							"value": "2"
-						},
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MDM4NTkzMjksImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjoxfQ.ifmDo6ZxINIhNgFN3tazJI1wOVtIBsvk4eh10Sz1iVY",
-							"disabled": true
 						}
 					]
-				}
+				},
+				"description": "**\\## Search Task with Keywords and fetch Page Wise data.**\n\nThis endpoint allows you to get search a specific task using search Text and allows to fetch task page wise. **Giving page 0 and size 2 will fetch the 1st two search response. and giving page as 1 will fetch the next 2 search response.** This request takes the authentication from the Header parameter Set-Cookie generated by login request\n\n**Method**: \\`GET\\`  \n**Endpoint**: \\`[/api/search?keyword=work&amp;page=0&amp;size=2](http://localhost:6060/api/search?keyword=work&page=0&size=2)'\n\n**\\### Request Body**\n\nNo Request Body to be provided as it fetches specific the task depending on the search text created by the user.\n\n**\\### Response Body in List of multiple Tasks**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|\n\n| \\`id\\` | Integer| Unique Id of task. |  \n| \\`title\\` | String | Title of the task |  \n| \\`description\\`| String | Description of the task |\n\n| \\`status\\` | Integer| 0 - IN_PROGRESS, 1 - Completed |  \n| \\`priority\\`| Integer| Lower number takes higher priority |\n\n| \\`due_date\\` | String | Date on which the task needs to be completed format 'YYY-MM-DD' |"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Search Task with Keywords and Page Wise",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/search?keyword=at&page=0&size=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "at"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:50:29 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"content\": [\n        {\n            \"id\": 4,\n            \"title\": \"Develop a method to calculate UTC time\",\n            \"description\": \"Develop a method to calculate UTC time \",\n            \"status\": \"IN_PROGRESS\",\n            \"priority\": 1,\n            \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n            \"created_At\": \"2024-09-28T11:46:31.582+00:00\",\n            \"updated_At\": \"2024-09-28T11:46:31.582+00:00\"\n        },\n        {\n            \"id\": 5,\n            \"title\": \"Do Yoga at 6am\",\n            \"description\": \"Do Yoga daily morning \",\n            \"status\": \"IN_PROGRESS\",\n            \"priority\": 1,\n            \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n            \"created_At\": \"2024-09-28T11:47:15.291+00:00\",\n            \"updated_At\": \"2024-09-28T11:47:15.291+00:00\"\n        }\n    ],\n    \"pageable\": \"INSTANCE\",\n    \"last\": true,\n    \"totalElements\": 2,\n    \"totalPages\": 1,\n    \"size\": 2,\n    \"number\": 0,\n    \"sort\": {\n        \"empty\": true,\n        \"sorted\": false,\n        \"unsorted\": true\n    },\n    \"first\": true,\n    \"numberOfElements\": 2,\n    \"empty\": false\n}"
+				}
+			]
 		},
 		{
 			"name": "Delete Task",
@@ -399,7 +875,7 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MDM4NTkzMjksImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjoxfQ.ifmDo6ZxINIhNgFN3tazJI1wOVtIBsvk4eh10Sz1iVY",
+						"value": "{{cookieValue}}",
 						"type": "text"
 					}
 				],
@@ -415,9 +891,88 @@
 						"tasks",
 						"1"
 					]
-				}
+				},
+				"description": "**\\## Get Task**\n\nThis endpoint allows you to delete a specific task by the user who has logged in. **This request takes the id of the task which need to be updated in the request path.**This request takes the authentication from the Header parameter Set-Cookie generated by login request\n\n**Method**: \\`DELETE\\`  \n**Endpoint**: \\`[/api/tasks/1](http://localhost:6060/api/tasks/1)'\n\n**\\### Request Body**\n\nNo Request Body to be provided as it deletes the task id given in the request path\n\n**\\### Response Body in List of multiple Tasks**  \n| Parameter | Type | Description |  \n|--------------|--------|---------------------------------------|  \n| \\`Message\\` | String | Deletion successful message |"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Delete Task",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:6060/api/tasks/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks",
+								"4"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "26"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 11:50:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Task deleted successfully."
+				}
+			]
 		}
 	]
 }
