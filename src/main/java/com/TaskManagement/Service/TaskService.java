@@ -75,7 +75,6 @@ public class TaskService {
         else{
             tasks = tasks = taskRepository.findAll();
         }
-
         return TaskMapper.tasksDTOtaskListResponseDTO(tasks);
     }
     public boolean deleteTaskById(Long id) {

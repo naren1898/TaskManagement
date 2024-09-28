@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name="users_task")
+@Entity(name="users")
 @Getter
 @Setter
 public class User extends BaseModel{
