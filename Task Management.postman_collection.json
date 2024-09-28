@@ -129,7 +129,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 28 Sep 2024 11:21:12 GMT"
+							"value": "Sat, 28 Sep 2024 12:40:33 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -141,7 +141,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"username\": \"John\",\n    \"role\": null\n}"
+					"body": "{\n    \"username\": \"John\",\n    \"role\": \"USER\"\n}"
 				}
 			]
 		},
@@ -228,7 +228,7 @@
 					"header": [
 						{
 							"key": "Set-Cookie",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MjM2NTY5NDIsImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjo0fQ.3MkDJiHjwB07aZUqA1iA2ssMcE0v6kM6gngpRWEOo78"
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1MjczOTU1MjYsInJvbGVzIjoiQURNSU4iLCJleHBpcnlBdCI6MTk5OTcsInVzZXJJZCI6MX0.uqj4tphWzOAl8A00miwabGotJpG31nHl5bSFFl9wIsE"
 						},
 						{
 							"key": "X-Content-Type-Options",
@@ -264,7 +264,7 @@
 						},
 						{
 							"key": "Date",
-							"value": "Sat, 28 Sep 2024 11:40:56 GMT"
+							"value": "Sat, 28 Sep 2024 12:43:15 GMT"
 						},
 						{
 							"key": "Keep-Alive",
@@ -276,7 +276,90 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"username\": \"Walter\",\n    \"role\": null\n}"
+					"body": "{\n    \"username\": \"Walter\",\n    \"role\": \"ADMIN\"\n}"
+				},
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"username\": \"John\",\r\n\"password\": \"password@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Set-Cookie",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVhdGVkQXQiOjE3Mjc1Mjc0Mjk5NDIsInJvbGVzIjoiVVNFUiIsImV4cGlyeUF0IjoxOTk5NywidXNlcklkIjoyfQ.3Kandp7i3QjWJAn3vJpKAcOMbsI-mu7j33shs_8G36A"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 12:43:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"John\",\n    \"role\": \"USER\"\n}"
 				}
 			]
 		},
@@ -484,6 +567,91 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"id\": 5,\n    \"title\": \"Do Yoga at 6am\",\n    \"description\": \"Do Yoga daily morning \",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": 1,\n    \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n    \"created_At\": \"2024-09-28T11:47:15.291+00:00\",\n    \"updated_At\": \"2024-09-28T11:47:15.291+00:00\"\n}"
+				},
+				{
+					"name": "Task 3",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{cookieValue}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Do Yoga at 6am\",\r\n    \"description\": \"Do Yoga daily morning \",\r\n    \"status\": 1,\r\n    \"priority\": 1,\r\n    \"due_date\":\"2024-10-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6060/api/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"api",
+								"tasks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 28 Sep 2024 12:45:01 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"title\": \"Do Yoga at 6am\",\n    \"description\": \"Do Yoga daily morning \",\n    \"status\": \"IN_PROGRESS\",\n    \"priority\": 1,\n    \"due_date\": \"2024-10-10T00:00:00.000+00:00\",\n    \"created_At\": \"2024-09-28T12:45:01.682+00:00\",\n    \"updated_At\": \"2024-09-28T12:45:01.682+00:00\"\n}"
 				}
 			]
 		},
