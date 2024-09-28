@@ -16,9 +16,10 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     Optional<Task> findById(Long task_id);
     List<Task> findAllByUser_id(Long userId);
 
-//    Optional<Task> findByTitle(String Title);
-//   @Query("SELECT t FROM Task t WHERE t.title = :title")
-//   Optional<Task> findByTitle(@Param("title") String title);
+    @Override
+    List<Task> findAll();
+
      List<Task> findAllByTitleContainingOrDescriptionContaining(String title, String description, Pageable pageable);
-    List<Task> findAllByTitleContainingOrDescriptionContainingAndUser_id(String title, String description, Long userId, Pageable pageable);
+    @Query(value="SELECT id,created_at,description,due_date,priority,status,title,updated_at,user_id FROM Task WHERE (title LIKE %:title% OR description LIKE %:description%) and user_id = :userId", nativeQuery = true)
+     List<Task> findAllByTitleContainingOrDescriptionContainingAndUser_id(String title, String description, Long userId, Pageable pageable);
 }

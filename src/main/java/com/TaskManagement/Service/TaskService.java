@@ -1,6 +1,7 @@
 package com.TaskManagement.Service;
 
 import com.TaskManagement.Mapper.TaskMapper;
+import com.TaskManagement.Model.Role;
 import com.TaskManagement.Model.Task;
 import com.TaskManagement.Model.User;
 import com.TaskManagement.Repository.TaskRepository;
@@ -62,7 +63,19 @@ public class TaskService {
         return TaskMapper.TasktoTaskResponseDTO(savedtask);
     }
     public TaskListResponseDTO getAllTasks(Long userId) {
-        List<Task> tasks = taskRepository.findAllByUser_id(userId);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()){
+            return null;
+        }
+        User user = optionalUser.get();
+        List<Task> tasks = null;
+        if(user.getRole().equals(Role.USER)){
+            tasks = tasks = taskRepository.findAllByUser_id(userId);
+        }
+        else{
+            tasks = tasks = taskRepository.findAll();
+        }
+
         return TaskMapper.tasksDTOtaskListResponseDTO(tasks);
     }
     public boolean deleteTaskById(Long id) {
@@ -73,9 +86,19 @@ public class TaskService {
         return false;
     }
     public Page<TaskResponseDTO> searchTasks(String keyword, int page, int size, Long userId) {
-
         Pageable pageable = PageRequest.of(page, size);
-        List<Task> tasks = taskRepository.findAllByTitleContainingOrDescriptionContainingAndUser_id(keyword, keyword, userId, pageable);
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()){
+            return null;
+        }
+        User user = optionalUser.get();
+        List<Task> tasks = null;
+        if(user.getRole().equals(Role.USER)){
+            tasks = taskRepository.findAllByTitleContainingOrDescriptionContainingAndUser_id(keyword, keyword, userId, pageable);
+        }
+        else{
+            tasks = taskRepository.findAllByTitleContainingOrDescriptionContaining(keyword, keyword, pageable);
+        }
         TaskListResponseDTO taskListResponseDTOS = TaskMapper.tasksDTOtaskListResponseDTO(tasks);
         Page<TaskResponseDTO> taskListResponseDTOSPage = new PageImpl<>(taskListResponseDTOS.getTasks());
         return taskListResponseDTOSPage;

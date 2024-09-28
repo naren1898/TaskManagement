@@ -4,6 +4,7 @@ import com.TaskManagement.Exception.InvalidCredentialException;
 import com.TaskManagement.Exception.InvalidTokenException;
 import com.TaskManagement.Exception.UserAlreadyExistException;
 import com.TaskManagement.Exception.UserNotfoundException;
+import com.TaskManagement.Model.Role;
 import com.TaskManagement.Model.Session;
 import com.TaskManagement.Model.SessionStatus;
 import com.TaskManagement.Model.User;
@@ -43,6 +44,7 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setRole(Role.USER);
         userRepository.save(user);
         return UserDTO.from(user);
     }
@@ -53,7 +55,7 @@ public class UserService {
             throw new UserNotfoundException("User Not found");
         }
         User user = useroptional.get();
-        if (bCryptPasswordEncoder.encode(password).matches(user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(password,user.getPassword())) {
             throw new InvalidCredentialException("Invalid Credentails");
         }
         UserDTO userdto = UserDTO.from(user);
